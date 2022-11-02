@@ -3,22 +3,23 @@ from django.contrib import admin
 from .models import (
     Favorites,
     Ingredient,
-    # IngredientInRecipe,
+    IngredientInRecipe,
     Recipe,
     ShoppingCart,
     Tag,
-    # TagInRecipe
+    TagInRecipe
 )
 from users.mixins import DisplayEmptyFieldMixin
 
-# class IngredientInRecipeInline(admin.TabularInline):
-#     model = IngredientInRecipe
-#     extra = 1
+
+class IngredientInRecipeInline(admin.TabularInline):
+    model = IngredientInRecipe
+    extra = 1
 #
 #
-# class TagInRecipeInline(admin.TabularInline):
-#     model = TagsInRecipe
-#     extra = 1
+class TagInRecipeInline(admin.TabularInline):
+    model = TagInRecipe
+    extra = 1
 
 
 @admin.register(Ingredient)
@@ -49,7 +50,7 @@ class RecipeAdmin(DisplayEmptyFieldMixin, admin.ModelAdmin):
     search_fields = ('author__username', 'name',)
     list_filter = ('name', 'author', 'tags',)
     # filter_vertical = ('tags',)
-    # inlines = (IngredientInRecipeInline, TagInRecipeInline,)
+    inlines = (IngredientInRecipeInline, TagInRecipeInline)
 
 
 @admin.register(Favorites)
