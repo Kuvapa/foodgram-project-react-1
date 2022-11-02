@@ -47,4 +47,3 @@ class CustomUserSerializer(UserSerializer):
             user.is_authenticated
             and Subscription.objects.filter(user=user, author=obj).exists()
         )
-
