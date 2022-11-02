@@ -1,4 +1,4 @@
-# from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
@@ -14,7 +14,7 @@ from .models import (
     Tag
 )
 
-# User = get_user_model()
+User = get_user_model()
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -30,7 +30,7 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class IngredientInRecipeSerializer(serializers.ModelSerializer):
-    # id = serializers.ReadOnlyField(source='ingredient.id')
+    id = serializers.ReadOnlyField(source='ingredient.id')
     name = serializers.ReadOnlyField(source='ingredient.name')
     measurement_unit = serializers.ReadOnlyField(
         source='ingredient.measurement_unit'

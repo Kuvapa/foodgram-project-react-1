@@ -1,13 +1,13 @@
-# from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
 # from recipes.models import Recipe
 # from recipes.serializers import FavoritesSerializer
-from .models import Subscription, User
+from .models import Subscription
 
 
-# User = get_user_model()
+User = get_user_model()
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
