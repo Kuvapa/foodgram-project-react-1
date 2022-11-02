@@ -6,7 +6,6 @@ from rest_framework import serializers
 # from recipes.serializers import FavoritesSerializer
 from .models import Subscription
 
-
 User = get_user_model()
 
 

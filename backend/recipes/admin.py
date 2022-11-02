@@ -1,15 +1,8 @@
 from django.contrib import admin
-
-from .models import (
-    Favorites,
-    Ingredient,
-    IngredientInRecipe,
-    Recipe,
-    ShoppingCart,
-    Tag,
-    TagInRecipe
-)
 from users.mixins import DisplayEmptyFieldMixin
+
+from .models import (Favorites, Ingredient, IngredientInRecipe, Recipe,
+                     ShoppingCart, Tag, TagInRecipe)
 
 
 class IngredientInRecipeInline(admin.TabularInline):
