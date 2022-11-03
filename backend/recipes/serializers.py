@@ -6,15 +6,8 @@ from rest_framework import serializers
 from users.models import Subscription
 from users.serializers import CustomUserSerializer
 
-from .models import (
-    Favorites,
-    Ingredient,
-    IngredientInRecipe,
-    Recipe,
-    ShoppingCart,
-    Tag,
-    TagInRecipe
-)
+from .models import (Favorites, Ingredient, IngredientInRecipe, Recipe,
+                     ShoppingCart, Tag, TagInRecipe)
 
 User = get_user_model()
 

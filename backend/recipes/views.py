@@ -10,22 +10,12 @@ from rest_framework.response import Response
 
 from api.filters import IngredientFilter, RecipeFilter
 from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
-from recipes.models import (
-    Favorites,
-    Ingredient,
-    IngredientInRecipe,
-    Recipe,
-    ShoppingCart,
-    Tag
-)
-from recipes.serializers import (
-    FavoritePreviewSerializer,
-    FavoritesSerializer,
-    IngredientSerializer,
-    RecipeCreateSerializer,
-    RecipeViewSerializer,
-    TagSerializer
-)
+from recipes.models import (Favorites, Ingredient, IngredientInRecipe, Recipe,
+                            ShoppingCart, Tag)
+from recipes.serializers import (FavoritePreviewSerializer,
+                                 FavoritesSerializer, IngredientSerializer,
+                                 RecipeCreateSerializer, RecipeViewSerializer,
+                                 TagSerializer)
 
 
 class TagsViewSet(viewsets.ReadOnlyModelViewSet):

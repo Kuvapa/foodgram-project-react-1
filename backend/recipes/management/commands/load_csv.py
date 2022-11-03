@@ -20,5 +20,5 @@ class Command(BaseCommand):
                         measurement_unit=measurement_unit
                     )
                 except IntegrityError:
-                    print (f'Ингредиент {name} {measurement_unit}'
-                           f'уже есть в базе')
+                    print(f'Ингредиент {name} {measurement_unit}'
+                          f'уже есть в базе')
