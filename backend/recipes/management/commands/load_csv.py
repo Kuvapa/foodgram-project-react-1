@@ -1,16 +1,24 @@
 import csv
 
 from django.core.management.base import BaseCommand
+from django.db import IntegrityError
+
 from recipes.models import Ingredient
 
 
 class Command(BaseCommand):
+
     def handle(self, *args, **options):
-        with open('recipes/data/ingredients.csv', 'r', encoding='utf-8') as f:
-            data = csv.reader(f)
-            for row in data:
+        file_name = 'recipes/data/ingredients.csv'
+        with open(file_name, 'r', encoding='utf-8') as file:
+            file_reader = csv.reader(file)
+            for row in file_reader:
                 name, measurement_unit = row
-                Ingredient.objects.get_or_create(
-                    name=name,
-                    measurement_unit=measurement_unit
-                )
+                try:
+                    Ingredient.objects.get_or_create(
+                        name=name,
+                        measurement_unit=measurement_unit
+                    )
+                except IntegrityError:
+                    print (f'Ингредиент {name} {measurement_unit}'
+                           f'уже есть в базе')

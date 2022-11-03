@@ -1,11 +1,12 @@
-from api.pagination import CustomPagesPaginator
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
-from recipes.serializers import SubscriptionSerializer
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
+from api.pagination import CustomPagesPaginator
+from recipes.serializers import SubscriptionSerializer
 
 from .models import Subscription, User
 
@@ -48,20 +49,21 @@ class CustomUserViewSet(UserViewSet):
     def subscribe(self, request, id):
         author = get_object_or_404(User, id=id)
         user = self.request.user
-        subscription = Subscription.objects.filter(user=user, author=author)
         if request.method == 'POST':
-            if subscription.exists():
+            subscription, created = Subscription.objects.get_or_create(
+                user=user,
+                author=author
+            )
+            if not created:
                 return Response(
                     {'errors': 'Вы уже подписаны на этого автора!'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
-
             if user == author:
                 return Response(
                     {'errors': 'Нельзя подписаться на самого себя!'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
-            Subscription.objects.create(user=user, author=author)
             serializer = SubscriptionSerializer(
                 subscription,
                 context={'request': request}
@@ -69,12 +71,15 @@ class CustomUserViewSet(UserViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         if request.method == 'DELETE':
-            # if not subscription.exists():
-            #     return Response(
-            #         {'errors': 'Вы не подписаны на этого автора!'},
-            #         status=status.HTTP_400_BAD_REQUEST
-            #     )
-            if subscription.exists():
-                subscription.delete()
-                return Response(status=status.HTTP_204_NO_CONTENT)
+            subscription = Subscription.objects.filter(
+                user=user,
+                author=author
+            )
+            if not subscription.exists():
+                return Response(
+                    {'errors': 'Вы не подписаны на этого автора!'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            subscription.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_204_NO_CONTENT)

@@ -2,6 +2,7 @@ from colorfield.fields import ColorField
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
+
 from recipes.utils import colors
 
 User = get_user_model()
@@ -19,11 +20,6 @@ class Tag(models.Model):
         help_text='Выберите тег',
         max_length=7
     )
-    # color = models.CharField(
-    #     verbose_name='Цвет тега',
-    #     help_text='Выберите тег',
-    #     max_length=7,
-    #     choices=colors)
     slug = models.SlugField(
         verbose_name='Ссылка',
         help_text='Слаг тега',

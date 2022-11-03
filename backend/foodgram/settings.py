@@ -8,8 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get('SECRET_KEY', default='=y+zog9=@7&wc-n(u4d2qojli5i!8#+da*73avd)8#c!l%k&^q')
 
-# DEBUG = os.environ.get('DEBUG', default=False)
-DEBUG = False
+DEBUG = os.environ.get('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = ['51.250.90.124', '127.0.0.1', 'localhost']
@@ -67,36 +66,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'foodgram.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
-        'NAME': os.getenv('DB_NAME', default='postgres'),
-        'USER': os.getenv('POSTGRES_USER', default='postgres'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
-        'HOST': os.getenv('DB_HOST', default='db'),
-        'PORT': os.getenv('DB_PORT', default='5432')
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
-
-
-# if DEBUG:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#         }
-#     }
-# else:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
-#             'NAME': os.getenv('DB_NAME', default='postgres'),
-#             'USER': os.getenv('POSTGRES_USER', default='postgres'),
-#             'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
-#             'HOST': os.getenv('DB_HOST', default='db'),
-#             'PORT': os.getenv('DB_PORT', default='5432')
-#         },
-#     }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
+            'NAME': os.getenv('DB_NAME', default='postgres'),
+            'USER': os.getenv('POSTGRES_USER', default='postgres'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
+            'HOST': os.getenv('DB_HOST', default='db'),
+            'PORT': os.getenv('DB_PORT', default='5432')
+        },
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -158,6 +145,3 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-# EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')

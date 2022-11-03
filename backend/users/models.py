@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+
 from users.validators import validate_username
 
 
@@ -73,6 +74,10 @@ class Subscription(models.Model):
             models.UniqueConstraint(
                 fields=('user', 'author'),
                 name='unique_follow'
+            ),
+            models.CheckConstraint(
+                check=~models.Q(user=models.F('author')),
+                name='user!=author',
             ),
         )
 

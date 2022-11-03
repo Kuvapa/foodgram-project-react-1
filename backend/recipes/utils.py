@@ -5,7 +5,7 @@ Snack = '#F4A460'
 Soup = '#7FFFD4'
 Dessert = '#FFA500'
 Salad = '#90EE90'
-Souce = '#EE82EE'
+Souse = '#EE82EE'
 Drink = '#8B4513'
 
 colors = (
@@ -16,6 +16,6 @@ colors = (
     (Soup, 'Суп'),
     (Dessert, 'Десерт'),
     (Salad, 'Салат'),
-    (Souce, 'Соус'),
+    (Souse, 'Соус'),
     (Drink, 'Напиток')
 )

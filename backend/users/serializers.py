@@ -2,9 +2,8 @@ from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
-# from recipes.models import Recipe
-# from recipes.serializers import FavoritesSerializer
 from .models import Subscription
+
 
 User = get_user_model()
 
@@ -35,7 +34,6 @@ class CustomUserSerializer(UserSerializer):
             'id',
             'username',
             'email',
-            'password',
             'first_name',
             'last_name',
             'is_subscribed',

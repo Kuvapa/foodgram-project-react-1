@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from users.mixins import DisplayEmptyFieldMixin
 
 from .models import (Favorites, Ingredient, IngredientInRecipe, Recipe,
