@@ -15,7 +15,7 @@ class CustomUserViewSet(UserViewSet):
 
     @action(
         methods=('get',),
-        url_path="me",
+        url_path='me',
         detail=False,
         permission_classes=(IsAuthenticated,)
     )

@@ -32,15 +32,21 @@ class TagAdmin(DisplayEmptyFieldMixin, admin.ModelAdmin):
 @admin.register(Recipe)
 class RecipeAdmin(DisplayEmptyFieldMixin, admin.ModelAdmin):
     list_display = (
+        'id',
         'author',
         'name',
         'text',
         'cooking_time',
         'pub_date',
+        'count_favorite'
     )
     search_fields = ('author__username', 'name',)
     list_filter = ('name', 'author', 'tags',)
+    readonly_fields = ('count_favorite',)
     inlines = (IngredientInRecipeInline, TagInRecipeInline)
+
+    def count_favorite(self, obj):
+        return obj.favorite_recipe.count()
 
 
 @admin.register(Favorites)

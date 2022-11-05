@@ -8,6 +8,7 @@ from users.serializers import CustomUserSerializer
 from .models import (Favorites, Ingredient, IngredientInRecipe, Recipe,
                      ShoppingCart, Tag, TagInRecipe)
 
+
 User = get_user_model()
 
 
@@ -18,14 +19,13 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class TagInRecipeSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField(source='tag.id')
-    name = serializers.ReadOnlyField(source='tag.name')
-    color = serializers.ReadOnlyField(source='tag.color')
-    slug = serializers.ReadOnlyField(source='tag.slug')
-
     class Meta:
         model = TagInRecipe
         fields = ('id', 'name', 'color', 'slug')
+        read_only_fields = ('id', 'name', 'color', 'slug')
+
+    def to_representation(self, instance):
+        return TagSerializer(instance.tag).data
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -35,26 +35,22 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class IngredientInRecipeSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField(source='ingredient.id')
-    name = serializers.ReadOnlyField(source='ingredient.name')
-    measurement_unit = serializers.ReadOnlyField(
-        source='ingredient.measurement_unit'
-    )
-
     class Meta:
         model = IngredientInRecipe
         fields = ('id', 'name', 'measurement_unit', 'amount')
+        read_only_fields = ('id', 'name', 'measurement_unit', 'amount')
+
+    def to_representation(self, instance):
+        data = IngredientSerializer(instance.ingredient).data
+        data['amount'] = instance.amount
+        return data
 
 
 class FavoritesSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField(source='recipe.id')
-    name = serializers.ReadOnlyField(source='recipe.name')
-    image = Base64ImageField(source='recipe.image')
-    cooking_time = serializers.ReadOnlyField(source='recipe.cooking_time')
-
     class Meta:
         model = Favorites
         fields = ('id', 'name', 'image', 'cooking_time')
+        read_only_fields = ('id', 'name', 'image', 'cooking_time')
 
 
 class FavoritePreviewSerializer(serializers.ModelSerializer):
