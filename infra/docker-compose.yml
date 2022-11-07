@@ -16,13 +16,23 @@ services:
       - ../frontend/:/app/result_build/
 
   backend:
-    build: ../backend
+    image: unrainbow/foodgram:latest
     restart: always
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
     depends_on:
       - db
+    env_file:
+      - ./.env
+#  backend:
+#    build: ../backend
+#    restart: always
+#    volumes:
+#      - static_value:/app/static/
+#      - media_value:/app/media/
+#    depends_on:
+#      - db
 
   nginx:
     image: nginx:1.19.3
@@ -40,3 +50,4 @@ services:
 volumes:
   static_value:
   media_value:
+  db_value:

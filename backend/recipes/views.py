@@ -1,20 +1,21 @@
-from api.filters import IngredientFilter, RecipeFilter
-from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+from api.filters import IngredientFilter, RecipeFilter
+from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
 from recipes.models import (Favorites, Ingredient, IngredientInRecipe, Recipe,
                             ShoppingCart, Tag)
 from recipes.serializers import (FavoritePreviewSerializer,
                                  FavoritesSerializer, IngredientSerializer,
                                  RecipeCreateSerializer, RecipeViewSerializer,
                                  TagSerializer)
-from rest_framework import status, viewsets
-from rest_framework.decorators import action
-from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 
 
 class TagsViewSet(viewsets.ReadOnlyModelViewSet):
@@ -45,8 +46,34 @@ class RecipesViewSet(viewsets.ModelViewSet):
             return RecipeViewSerializer
         return RecipeCreateSerializer
 
+    # def perform_create(self, serializer):
+    #     serializer.save(author=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED)
+
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        return serializer.save()
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        serializer = RecipeViewSerializer(
+            instance=serializer.instance,
+            context={'request': self.request},
+        )
+        return Response(
+            serializer.data, status=status.HTTP_200_OK
+        )
 
     @action(
         methods=('post', 'delete'),
@@ -123,6 +150,6 @@ class RecipesViewSet(viewsets.ModelViewSet):
             text += f'{name}: {amount} {measurement_unit}\n'
         response = HttpResponse(text, content_type='text/plain')
         response['Content-Disposition'] = (
-            'attachment; filename="shopping-list.txt"'
+            'attachment; filename="shopping-list.pdf"'
         )
         return response
