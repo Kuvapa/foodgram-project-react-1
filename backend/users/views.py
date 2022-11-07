@@ -1,4 +1,4 @@
-from api.pagination import CustomPagesPaginator
+from rest_framework.pagination import PageNumberPagination
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
 from recipes.serializers import SubscriptionSerializer
@@ -11,7 +11,7 @@ from .models import Subscription, User
 
 
 class CustomUserViewSet(UserViewSet):
-    pagination_class = CustomPagesPaginator
+    pagination_class = PageNumberPagination
 
     @action(
         methods=('get',),
@@ -30,7 +30,7 @@ class CustomUserViewSet(UserViewSet):
         permission_classes=(IsAuthenticated,)
     )
     def get_subscriptions(self, request):
-        queryset = Subscription.objects.filter(user=request.user)
+        queryset = User.objects.filter(following__user=request.user)
         page = self.paginate_queryset(queryset)
         serializer = SubscriptionSerializer(
             page,

@@ -15,7 +15,7 @@ Python 3.7, Django 2.2, DRF, Djoser, PostgreSQL, Docker
 
 ### *Клонируйте репозиторий:*
 ```
-git@github.com:pervukhina-anna/foodgram-project-react.git
+git clone git@github.com:pervukhina-anna/foodgram-project-react.git
 ```
 
 ### *Установите и активируйте виртуальное окружение:*

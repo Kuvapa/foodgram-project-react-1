@@ -36,8 +36,8 @@ class Tag(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField(
-        verbose_name='Название ингридиента',
-        help_text='Укажите название ингридиента',
+        verbose_name='Название ингрeдиента',
+        help_text='Укажите название ингрeдиента',
         max_length=200,
         unique=True
     )
@@ -70,7 +70,7 @@ class Recipe(models.Model):
     )
     image = models.ImageField(
         verbose_name='Картинка',
-        upload_to='recipes/images/',
+        upload_to='recipes/',
     )
     text = models.TextField(
         verbose_name='Описание рецепта',
@@ -79,14 +79,14 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField(
         Ingredient,
         verbose_name='Ингредиенты',
-        help_text='Укажите ингридиенты',
+        help_text='Укажите ингрeдиенты',
         through='IngredientInRecipe',
     )
     tags = models.ManyToManyField(
         Tag,
         verbose_name='Теги',
         help_text='Укажите теги',
-        through='TagInRecipe')
+        through='Tag')
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации',
         auto_now_add=True
@@ -145,8 +145,8 @@ class IngredientInRecipe(models.Model):
         related_name='ingredient_recipe'
     )
     amount = models.PositiveSmallIntegerField(
-        verbose_name='Количество ингридиента',
-        help_text='Укажите количество ингридиента',
+        verbose_name='Количество ингрeдиента',
+        help_text='Укажите количество ингрeдиента',
         validators=(
             MinValueValidator(
                 1, message='Количество не может быть меньше 1!'),

@@ -6,12 +6,10 @@ services:
     volumes:
       - /var/lib/postgresql/data/
     env_file:
-      - ./.env
+      - ../backend/.env
 
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: unrainbow/foodgram_frontend
     volumes:
       - ../frontend/:/app/result_build/
 

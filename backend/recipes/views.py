@@ -121,8 +121,8 @@ class RecipesViewSet(viewsets.ModelViewSet):
         for ingredients in shopping_cart:
             name, measurement_unit, amount = ingredients
             text += f'{name}: {amount} {measurement_unit}\n'
-        response = HttpResponse(text, content_type='text/plain')
-        response['Content-Disposition'] = (
-            'attachment; filename="shopping-list.txt"'
-        )
-        return response
+            response = HttpResponse(text, content_type='text/plain')
+            response['Content-Disposition'] = (
+                'attachment; filename="shopping-list.txt"'
+            )
+            return response
