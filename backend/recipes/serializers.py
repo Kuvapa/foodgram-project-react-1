@@ -210,10 +210,10 @@ class SubscriptionSerializer(serializers.ModelSerializer):
                 context={'request': request}
             ).data
         return FavoritePreviewSerializer(
-                Recipe.objects.filter(author=obj)[:int(recipes_limit)],
-                many=True,
-                context={'request': request}
-            ).data
+            Recipe.objects.filter(author=obj)[:int(recipes_limit)],
+            many=True,
+            context={'request': request}
+        ).data
 
     def get_recipes_count(self, obj):
         return Recipe.objects.filter(author=obj).count()
