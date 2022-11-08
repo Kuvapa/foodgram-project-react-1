@@ -46,39 +46,29 @@ class CustomUserViewSet(UserViewSet):
         permission_classes=(IsAuthenticated,),
     )
     def subscribe(self, request, id):
-        author = get_object_or_404(User, id=id)
-        user = self.request.user
         if request.method == 'POST':
-            subscription, created = Subscription.objects.get_or_create(
-                user=user,
-                author=author
-            )
-            if not created:
-                return Response(
-                    {'errors': 'Вы уже подписаны на этого автора!'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            if user == author:
-                return Response(
-                    {'errors': 'Нельзя подписаться на самого себя!'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+            user = request.user
+            author = get_object_or_404(User, id=id)
+
+            data = {
+                'user': user.id,
+                'author': author.id,
+                'email': author.email,
+            }
             serializer = SubscriptionSerializer(
-                subscription,
-                context={'request': request}
+                data=data, context={'request': request}
             )
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         if request.method == 'DELETE':
-            subscription = Subscription.objects.filter(
-                user=user,
-                author=author
+            user = request.user
+            author = get_object_or_404(User, id=id)
+            subscribe = get_object_or_404(
+                Subscription, user=user, author=author
             )
-            if not subscription.exists():
-                return Response(
-                    {'errors': 'Вы не подписаны на этого автора!'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            subscription.delete()
+            subscribe.delete()
+
             return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(status=status.HTTP_204_NO_CONTENT)

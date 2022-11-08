@@ -43,7 +43,12 @@ class FavoritesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorites
         fields = ('id', 'name', 'image', 'cooking_time')
-        read_only_fields = ('id', 'name', 'image', 'cooking_time')
+
+    def to_representation(self, instance):
+        request = self.context.get('request')
+        context = {'request': request}
+        return FavoritePreviewSerializer(
+            instance.recipe, context=context).data
 
 
 class FavoritePreviewSerializer(serializers.ModelSerializer):
