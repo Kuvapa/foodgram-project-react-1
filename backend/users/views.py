@@ -54,7 +54,6 @@ class CustomUserViewSet(UserViewSet):
             data = {
                 'user': user.id,
                 'author': id,
-                # 'email': author.email,
             }
             serializer = SubscriptionSerializer(
                 data=data, context={'request': request}
