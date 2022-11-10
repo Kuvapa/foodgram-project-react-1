@@ -207,7 +207,6 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         )
         if tags:
             instance.tags.set(tags)
-        # super().update(instance, validated_data)
         instance.save()
         return instance
 

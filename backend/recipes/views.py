@@ -44,33 +44,6 @@ class RecipesViewSet(viewsets.ModelViewSet):
             return RecipeViewSerializer
         return RecipeCreateSerializer
 
-    # def create(self, request, *args, **kwargs):
-    #
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_create(serializer)
-    #     return Response(
-    #         serializer.data, status=status.HTTP_201_CREATED)
-    #
-    # def perform_create(self, serializer):
-    #     return serializer.save()
-    #
-    # def update(self, request, *args, **kwargs):
-    #     partial = kwargs.pop('partial', False)
-    #     instance = self.get_object()
-    #     serializer = self.get_serializer(
-    #         instance, data=request.data, partial=partial
-    #     )
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_update(serializer)
-    #     serializer = RecipeViewSerializer(
-    #         instance=serializer.instance,
-    #         context={'request': self.request},
-    #     )
-    #     return Response(
-    #         serializer.data, status=status.HTTP_200_OK
-    #     )
-
     @action(
         methods=('post', 'delete'),
         detail=True,
@@ -139,36 +112,3 @@ class RecipesViewSet(viewsets.ModelViewSet):
             'attachment; filename="shopping-list.pdf"'
         )
         return response
-
-    # def create_pdf(ingredients):
-    #     app_path = path.realpath(path.dirname(__file__))
-    #     font_path = path.join(app_path, 'font/PFAgoraSlabPro Bold.ttf')
-    #     pdfmetrics.registerFont(TTFont('PFAgoraSlabPro Bold', font_path))
-    #     response = HttpResponse(content_type='application/pdf')
-    #     response['Content-Disposition'] = ('attachment;'
-    #                                        'filename="shopping_list.pdf"')
-    #     page = canvas.Canvas(response)
-    #     page.setFont('PFAgoraSlabPro Bold', size=25)
-    #     page.drawString(200, 800, 'Список покупок.')
-    #     page.setFont('PFAgoraSlabPro Bold', size=18)
-    #     height = 750
-    #     for ingredient_num, (ingredient) in enumerate(ingredients, 1):
-    #         page.drawString(
-    #             48, height, (
-    #                 f'№ {ingredient_num}. {ingredient["ingredient__name"]}'
-    #                 f' - {ingredient["amount_sum"]} '
-    #                 f'{ingredient["ingredient__measurement_unit"]}'))
-    #         height -= 25
-    #     page.showPage()
-    #     page.save()
-    #     return response
-    #
-    # @action(detail=False, methods=['GET'],
-    #         permission_classes=[IsAuthenticated])
-    # def download_shopping_cart(self, request):
-    #     ingredients = IngredientInRecipe.objects.filter(
-    #         recipe__shopping_cart_recipe__user=request.user).values(
-    #             'ingredient__name', 'ingredient__measurement_unit').annotate(
-    #                 amount_sum=Sum('amount')).order_by('ingredient__name')
-    #
-    #     return self.create_pdf(ingredients=ingredients)

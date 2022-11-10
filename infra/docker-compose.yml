@@ -6,7 +6,7 @@ services:
     volumes:
       - /var/lib/postgresql/data/
     env_file:
-      - ../infra/.env
+      - ./.env
 
   frontend:
     image: unrainbow/foodgram_frontend
@@ -14,8 +14,7 @@ services:
       - ../frontend/:/app/result_build/
 
   backend:
-    build: ../backend
-    restart: always
+    image: unrainbow/foodgram_backend
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
