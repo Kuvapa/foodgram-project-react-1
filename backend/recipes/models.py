@@ -70,7 +70,7 @@ class Recipe(models.Model):
     )
     image = models.ImageField(
         verbose_name='Картинка',
-        upload_to='recipes/images/',
+        upload_to='recipes/',
     )
     text = models.TextField(
         verbose_name='Описание рецепта',
@@ -86,7 +86,7 @@ class Recipe(models.Model):
         Tag,
         verbose_name='Теги',
         help_text='Укажите теги',
-        through='TagInRecipe')
+        )
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации',
         auto_now_add=True
@@ -167,7 +167,7 @@ class Favorites(models.Model):
         User,
         verbose_name='Пользователь',
         on_delete=models.CASCADE,
-        related_name='favorite_recipe',
+        related_name='favorite_user',
     )
     recipe = models.ForeignKey(
         Recipe,
@@ -195,13 +195,13 @@ class ShoppingCart(models.Model):
         User,
         verbose_name='Пользователь',
         on_delete=models.CASCADE,
-        related_name='shopping_cart',
+        related_name='shopping_cart_user',
     )
     recipe = models.ForeignKey(
         Recipe,
         verbose_name='Рецепт',
         on_delete=models.CASCADE,
-        related_name='shopping_cart',
+        related_name='shopping_cart_recipe',
     )
 
     class Meta:

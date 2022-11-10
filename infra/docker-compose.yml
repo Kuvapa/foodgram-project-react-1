@@ -6,33 +6,21 @@ services:
     volumes:
       - /var/lib/postgresql/data/
     env_file:
-      - ./.env
+      - ../backend/.env
 
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: unrainbow/foodgram_frontend
     volumes:
       - ../frontend/:/app/result_build/
 
   backend:
-    image: unrainbow/foodgram:latest
+    build: ../backend
     restart: always
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
     depends_on:
       - db
-    env_file:
-      - ./.env
-#  backend:
-#    build: ../backend
-#    restart: always
-#    volumes:
-#      - static_value:/app/static/
-#      - media_value:/app/media/
-#    depends_on:
-#      - db
 
   nginx:
     image: nginx:1.19.3

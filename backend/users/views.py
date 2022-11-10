@@ -1,4 +1,4 @@
-from api.pagination import CustomPagesPaginator
+from api.pagination import CustomPagination
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
 from recipes.serializers import SubscriptionSerializer
@@ -11,7 +11,9 @@ from .models import Subscription, User
 
 
 class CustomUserViewSet(UserViewSet):
-    pagination_class = CustomPagesPaginator
+    pagination_class = CustomPagination
+    lookup_field = 'id'
+    search_fields = ('username',)
 
     @action(
         methods=('get',),
@@ -30,10 +32,11 @@ class CustomUserViewSet(UserViewSet):
         permission_classes=(IsAuthenticated,)
     )
     def get_subscriptions(self, request):
-        queryset = Subscription.objects.filter(user=request.user)
-        page = self.paginate_queryset(queryset)
+        queryset = self.paginate_queryset(
+            User.objects.filter(following__user=request.user)
+        )
         serializer = SubscriptionSerializer(
-            page,
+            queryset,
             many=True,
             context={'request': request}
         )
@@ -49,9 +52,10 @@ class CustomUserViewSet(UserViewSet):
         author = get_object_or_404(User, id=id)
         user = self.request.user
         if request.method == 'POST':
-            subscription, created = Subscription.objects.get_or_create(
-                user=user,
-                author=author
+            subscription = get_object_or_404(
+                Subscription,
+                author=get_object_or_404(User, id=id),
+                user=request.user
             )
             if not created:
                 return Response(
