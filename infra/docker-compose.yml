@@ -6,6 +6,7 @@ services:
     environment:
       - POSTGRES_USER={DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_HOST}
     volumes:
       - /var/lib/postgresql/data/
     env_file:
