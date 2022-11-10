@@ -63,10 +63,12 @@ jobs:
               echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
               echo DB_NAME=${{ secrets.DB_NAME }} >> .env
               echo DB_USER=${{ secrets.DB_USER }} >> .env
-              echo DB_PASSWORD=${{ secrets.B_PASSWORD }} >> .env
+              echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
               echo DB_HOST=${{ secrets.DB_HOST }} >> .env
               echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-              sudo docker-compose up -d
+              echo DEBUG=${{ secrets.DEBUG }} >> .env
+              echo HOST=${{ secrets.HOST }} >> .env
+              sudo docker-compose up -d --build
   send_message:
     runs-on: ubuntu-latest
     needs: deploy
