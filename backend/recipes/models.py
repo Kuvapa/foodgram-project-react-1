@@ -2,7 +2,6 @@ from colorfield.fields import ColorField
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
-
 from recipes.utils import colors
 
 User = get_user_model()
@@ -87,7 +86,7 @@ class Recipe(models.Model):
         Tag,
         verbose_name='Теги',
         help_text='Укажите теги',
-        )
+    )
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации',
         auto_now_add=True
