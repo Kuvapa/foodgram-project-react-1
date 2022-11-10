@@ -155,8 +155,8 @@ class RecipesViewSet(viewsets.ModelViewSet):
     #     for ingredient_num, (ingredient) in enumerate(ingredients, 1):
     #         page.drawString(
     #             48, height, (
-    #                 f'№ {ingredient_num}. {ingredient["ingredient__name"]} - '
-    #                 f'{ingredient["amount_sum"]} '
+    #                 f'№ {ingredient_num}. {ingredient["ingredient__name"]}'
+    #                 f' - {ingredient["amount_sum"]} '
     #                 f'{ingredient["ingredient__measurement_unit"]}'))
     #         height -= 25
     #     page.showPage()
