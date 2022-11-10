@@ -1,14 +1,12 @@
-
-from api.pagination import CustomPagination
-
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
-from recipes.serializers import SubscriptionSerializer
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
+from api.pagination import CustomPagination
+from recipes.serializers import SubscriptionSerializer
 
 from .models import Subscription, User
 
@@ -17,7 +15,6 @@ class CustomUserViewSet(UserViewSet):
     pagination_class = CustomPagination
     lookup_field = 'id'
     search_fields = ('username',)
-
 
     @action(
         methods=('get',),
