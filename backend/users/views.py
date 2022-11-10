@@ -72,19 +72,16 @@ class CustomUserViewSet(UserViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        if request.method == 'DELETE':
-            user = request.user
-            author = get_object_or_404(User, id=id)
-            subscribe = get_object_or_404(
-                Subscription, user=user, author=author
-            )
-            if not subscribe:
-                return Response(
-                    'Вы не подписаны на этого автора!!',
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            subscribe.delete()
+        user = request.user
+        author = get_object_or_404(User, id=id)
+        subscribe = get_object_or_404(Subscription, user=user, author=author)
+        if not subscribe:
             return Response(
-                f'Вы отписались от автора {author}!',
-                status=status.HTTP_204_NO_CONTENT
+                'Вы не подписаны на этого автора!',
+                status=status.HTTP_400_BAD_REQUEST
             )
+        subscribe.delete()
+        return Response(
+            f'Вы отписались от автора {author}!',
+            status=status.HTTP_204_NO_CONTENT
+        )
