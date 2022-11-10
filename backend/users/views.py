@@ -1,3 +1,6 @@
+
+from api.pagination import CustomPagination
+
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
 from recipes.serializers import SubscriptionSerializer
@@ -11,7 +14,10 @@ from .models import Subscription, User
 
 
 class CustomUserViewSet(UserViewSet):
-    pagination_class = PageNumberPagination
+    pagination_class = CustomPagination
+    lookup_field = 'id'
+    search_fields = ('username',)
+
 
     @action(
         methods=('get',),
@@ -30,10 +36,11 @@ class CustomUserViewSet(UserViewSet):
         permission_classes=(IsAuthenticated,)
     )
     def get_subscriptions(self, request):
-        queryset = User.objects.filter(following__user=request.user)
-        page = self.paginate_queryset(queryset)
+        queryset = self.paginate_queryset(
+            User.objects.filter(following__user=request.user)
+        )
         serializer = SubscriptionSerializer(
-            page,
+            queryset,
             many=True,
             context={'request': request}
         )
@@ -48,19 +55,21 @@ class CustomUserViewSet(UserViewSet):
     def subscribe(self, request, id):
         if request.method == 'POST':
             user = request.user
-            author = get_object_or_404(User, id=id)
-
             data = {
                 'user': user.id,
-                'author': author.id,
-                'email': author.email,
+                'author': id,
+                # 'email': author.email,
             }
             serializer = SubscriptionSerializer(
                 data=data, context={'request': request}
             )
+            if user.id == id:
+                return Response(
+                    'Нельзя подписываться на самого себя!',
+                    status=status.HTTP_400_BAD_REQUEST
+                )
             serializer.is_valid(raise_exception=True)
             serializer.save()
-
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         if request.method == 'DELETE':
@@ -69,6 +78,13 @@ class CustomUserViewSet(UserViewSet):
             subscribe = get_object_or_404(
                 Subscription, user=user, author=author
             )
+            if not subscribe:
+                return Response(
+                    'Вы не подписаны на этого автора!!',
+                    status=status.HTTP_400_BAD_REQUEST
+                )
             subscribe.delete()
-
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(
+                f'Вы отписались от автора {author}!',
+                status=status.HTTP_204_NO_CONTENT
+            )

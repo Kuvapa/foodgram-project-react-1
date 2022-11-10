@@ -1,10 +1,7 @@
-from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
-from .models import Subscription
-
-User = get_user_model()
+from .models import User
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
@@ -42,7 +39,4 @@ class CustomUserSerializer(UserSerializer):
         request = self.context.get('request')
         if not request or request.user.is_anonymous:
             return False
-        return Subscription.objects.filter(
-            user=request.user,
-            author=obj
-        ).exists()
+        return request.user.follower.filter(author=obj).exists()

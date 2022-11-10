@@ -9,8 +9,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY', default='=y+zog9=@7&wc-n(u4d2qojli5i!8#+da*73avd)8#c!l%k&^q')
 
 DEBUG = os.environ.get('DEBUG', default=False)
-
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', default='*')
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', default='*')
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -107,7 +107,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS':
-        'rest_framework.pagination.PageNumberPagination',
+        'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 6,
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
