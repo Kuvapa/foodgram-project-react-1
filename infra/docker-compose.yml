@@ -6,7 +6,7 @@ services:
     volumes:
       - /var/lib/postgresql/data/
     env_file:
-      - ../backend/.env
+      - ../infra/.env
 
   frontend:
     image: unrainbow/foodgram_frontend
