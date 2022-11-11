@@ -49,34 +49,13 @@ class CustomUserViewSet(UserViewSet):
         permission_classes=(IsAuthenticated,),
     )
     def subscribe(self, request, id):
+        user = request.user
         if request.method == 'POST':
-            user = request.user
-            data = {
-                'user': user.id,
-                'author': id,
-            }
-            serializer = SubscriptionSerializer(
-                data=data, context={'request': request}
-            )
-            if user.id == id:
-                return Response(
-                    'Нельзя подписываться на самого себя!',
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
+            author = get_object_or_404(User, id=id)
+            following = Subscription.objects.create(user=user, author=author)
+            serializer = SubscriptionSerializer(following)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        user = request.user
-        author = get_object_or_404(User, id=id)
-        subscribe = get_object_or_404(Subscription, user=user, author=author)
-        if not subscribe:
-            return Response(
-                'Вы не подписаны на этого автора!',
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        subscribe.delete()
-        return Response(
-            f'Вы отписались от автора {author}!',
-            status=status.HTTP_204_NO_CONTENT
-        )
+        following = get_object_or_404(Subscription, user=user, author__id=id)
+        following.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
