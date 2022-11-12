@@ -147,7 +147,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
             amount = ingredient['amount']
             if int(amount) <= 0:
                 raise serializers.ValidationError(
-                    'Выберите хотя бы один ингредиент!'
+                    'Количество ингредиента должно быть больше 0!'
                 )
         tags = self.initial_data.get('tags')
         if not tags:
