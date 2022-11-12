@@ -56,7 +56,8 @@ python manage.py runserver
 
 ### *Чтобы запустить проект через докер:*
 В папке **frontend** соберите образ docker `build -t YourDockerNickname/foodgram_frontend .`
-В папке **infra** создайте файл .env и заполните его данными. Пример:
+
+В папке **infra** создайте файл **.env** и заполните его данными. Пример:
 ```
 SECRET_KEY=YourSecretKeyFromDjangoProjectSettings
 DEBUG=True
@@ -88,7 +89,8 @@ SSH_KEY=SSHKey (для получения команда: cat ~/.ssh/id_rsa)
 TELEGRAM_TO=YourTelegramID
 TELEGRAM_TOKEN=BotToken
 ```
-Далее в папке infra запустите команду `docker-compose up --build`
+Далее в папке **infra** запустите команду `docker-compose up --build`
+
 После сборки запустите миграции, соберите статику, создайте суперпользователя, подгрузите данные из копии бд:
 ```
 docker-compose exec backend python manage.py makemigrations

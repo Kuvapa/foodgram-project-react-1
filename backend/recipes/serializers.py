@@ -35,12 +35,12 @@ class IngredientInRecipeSerializer(serializers.ModelSerializer):
         model = IngredientInRecipe
         fields = ('id', 'name', 'measurement_unit', 'amount')
 
-    def validate(self, data):
-        if int(data) < 1:
+    def validate_amount(self, value):
+        if int(value) < 1:
             raise serializers.ValidationError(
                 'Количество ингредиента должно быть больше нуля!'
             )
-        return data
+        return value
 
 
 class FavoritesSerializer(serializers.ModelSerializer):
@@ -237,10 +237,9 @@ class FollowSerializer(serializers.ModelSerializer):
         ]
 
     def to_representation(self, instance):
-        return SubscriptionSerializer(
-            instance,
-            context={'request': self.context.get('request')}
-        ).data
+        request = self.context.get('request')
+        context={'request': request}
+        return SubscriptionSerializer(instance.author, context=context).data
 
 
 class FollowRecipeSerializer(serializers.ModelSerializer):
