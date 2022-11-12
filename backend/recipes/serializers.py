@@ -238,7 +238,7 @@ class FollowSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         request = self.context.get('request')
-        context={'request': request}
+        context = {'request': request}
         return SubscriptionSerializer(instance.author, context=context).data
 
 
