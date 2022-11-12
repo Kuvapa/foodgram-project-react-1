@@ -35,6 +35,13 @@ class IngredientInRecipeSerializer(serializers.ModelSerializer):
         model = IngredientInRecipe
         fields = ('id', 'name', 'measurement_unit', 'amount')
 
+    def validate(self, data):
+        if int(data) < 1:
+            raise serializers.ValidationError(
+                'Количество ингредиента должно быть больше нуля!'
+            )
+        return data
+
 
 class FavoritesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -147,7 +154,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
             amount = ingredient['amount']
             if int(amount) <= 0:
                 raise serializers.ValidationError(
-                    'Количество ингредиента должно быть больше 0!'
+                    'Количество ингредиента должно быть больше нуля!'
                 )
         tags = self.initial_data.get('tags')
         if not tags:

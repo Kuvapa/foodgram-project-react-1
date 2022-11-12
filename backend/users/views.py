@@ -1,7 +1,7 @@
 from api.pagination import CustomPagination
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
-from recipes.serializers import SubscriptionSerializer
+from recipes.serializers import FollowSerializer, SubscriptionSerializer
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -62,7 +62,7 @@ class CustomUserViewSet(UserViewSet):
         author = get_object_or_404(User, id=id)
         if request.method == 'POST':
             following = Subscription.objects.create(user=user, author=author)
-            serializer = SubscriptionSerializer(
+            serializer = FollowSerializer(
                 following,
                 context={'request': request}
             )
