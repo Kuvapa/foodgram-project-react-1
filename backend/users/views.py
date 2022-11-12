@@ -49,21 +49,11 @@ class CustomUserViewSet(UserViewSet):
         permission_classes=(IsAuthenticated,),
     )
     def subscribe(self, request, id):
-        # user = request.user
-        # if request.method == 'POST':
-        #     author = get_object_or_404(User, id=id)
-        #     Subscription.objects.create(user=user, author=author)
-        #     return Response(status=status.HTTP_201_CREATED)
-        #
-        # following = get_object_or_404(Subscription, user=user, author__id=id)
-        # following.delete()
-        # return Response(status=status.HTTP_204_NO_CONTENT)
         user = request.user
         author = get_object_or_404(User, id=id)
         if request.method == 'POST':
-            following = Subscription.objects.create(user=user, author=author)
-            serializer = FollowSerializer(following)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            Subscription.objects.create(user=user, author=author)
+            return Response(status=status.HTTP_201_CREATED)
         following = get_object_or_404(Subscription, user=user, author=author)
         following.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
