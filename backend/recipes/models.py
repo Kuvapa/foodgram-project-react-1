@@ -14,8 +14,7 @@ class Tag(models.Model):
         unique=True
     )
     color = ColorField(
-        samples=colors,
-        verbose_name='hex цвета тэга',
+        verbose_name='hex цвета тега',
         help_text='Выберите тег',
         max_length=7
     )
@@ -86,6 +85,7 @@ class Recipe(models.Model):
         Tag,
         verbose_name='Теги',
         help_text='Укажите теги',
+        through='TagInRecipe'
     )
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации',

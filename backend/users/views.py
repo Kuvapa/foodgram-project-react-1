@@ -52,8 +52,12 @@ class CustomUserViewSet(UserViewSet):
         user = request.user
         author = get_object_or_404(User, id=id)
         if request.method == 'POST':
-            Subscription.objects.create(user=user, author=author)
-            return Response(status=status.HTTP_201_CREATED)
+            follow = Subscription.objects.create(user=user, author=author)
+            serializer = SubscriptionSerializer(
+                follow,
+                context={'request': request}
+            )
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         following = get_object_or_404(Subscription, user=user, author=author)
         following.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

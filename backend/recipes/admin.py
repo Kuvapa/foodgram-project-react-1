@@ -44,6 +44,7 @@ class RecipeAdmin(DisplayEmptyFieldMixin, admin.ModelAdmin):
     list_filter = ('name', 'author', 'tags',)
     readonly_fields = ('count_favorite',)
     inlines = (IngredientInRecipeInline, TagInRecipeInline)
+    exclude = ('tags', 'ingredients')
 
     def count_favorite(self, obj):
         return obj.favorite_recipe.count()
