@@ -84,7 +84,6 @@ class Recipe(models.Model):
         Tag,
         verbose_name='Теги',
         help_text='Укажите теги',
-        through='TagInRecipe'
     )
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации',
