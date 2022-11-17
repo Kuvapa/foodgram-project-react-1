@@ -14,7 +14,7 @@ class User(AbstractUser):
     )
     email = models.EmailField(
         verbose_name='Адрес электронной почты',
-        help_text='Укажите адоес электронной почты',
+        help_text='Укажите адрес электронной почты',
         max_length=254,
         unique=True,
         error_messages={'unique': 'Этот email уже зарегистрирован!'}
